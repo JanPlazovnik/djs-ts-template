@@ -3,9 +3,9 @@ import Bot from './Bot';
 import Logger from './utilities/logger.util';
 import { registerCommands } from './utilities/registration.util';
 import { ICommand, IModal, IButton } from './types/bot-core';
-import CommandHandler from './commands/command.handler';
-import ButtonHandler from './buttons/button.handler';
-import ModalHandler from './modals/modal.handler';
+import CommandHandler from './handlers/command.handler';
+import ButtonHandler from './handlers/button.handler';
+import ModalHandler from './handlers/modal.handler';
 
 async function start(): Promise<void> {
     if (!process.env.BOT_TOKEN) {
