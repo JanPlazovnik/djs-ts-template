@@ -17,7 +17,7 @@ export default class ButtonHandler implements IHandler<ButtonInteraction> {
 
         const context = getInteractionContext(interaction);
 
-        await interaction.deferReply({ ephemeral: button.options.ephemeral ?? false });
+        await interaction.deferReply({ ephemeral: button.options?.ephemeral ?? false });
 
         try {
             await button.execute(context);

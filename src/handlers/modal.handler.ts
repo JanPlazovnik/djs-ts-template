@@ -17,7 +17,7 @@ export default class ModalHandler implements IHandler<ModalSubmitInteraction> {
 
         const context = getInteractionContext(interaction);
 
-        await interaction.deferReply({ ephemeral: modal.options.ephemeral ?? false });
+        await interaction.deferReply({ ephemeral: modal.options?.ephemeral ?? false });
 
         try {
             await modal.execute(context);

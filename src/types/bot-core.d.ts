@@ -31,7 +31,7 @@ export interface IHandler<T extends Interaction> {
 }
 
 export interface IInteraction<T extends Interaction> {
-    options: IInteractionOptions;
+    options?: IInteractionOptions;
     execute: (context: IInteractionContext<T>) => Promise<void>;
 }
 

@@ -20,7 +20,7 @@ export default class CommandHandler implements IHandler<ChatInputCommandInteract
         // Checking for undefined since some commands must not be deferred.
         // For example, if a command needs to show a modal, it should never be deferred.
         // Unless I did something wrong during testing, in which case, please let me know :)
-        if (command.options.ephemeral !== undefined) {
+        if (command.options?.ephemeral !== undefined) {
             await interaction.deferReply({ ephemeral: command.options.ephemeral ?? false });
         }
 
