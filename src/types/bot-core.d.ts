@@ -32,7 +32,7 @@ export interface IHandler<T extends Interaction> {
 
 export interface IInteraction<T extends Interaction> {
     options: IInteractionOptions;
-    execute: (interaction: IInteractionContext<T>) => Promise<void>;
+    execute: (context: IInteractionContext<T>) => Promise<void>;
 }
 
 export interface ICommand extends IInteraction<ChatInputCommandInteraction> {
