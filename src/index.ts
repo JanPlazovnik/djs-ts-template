@@ -6,6 +6,9 @@ import { ICommand, IModal, IButton } from './types/bot-core';
 import CommandHandler from './handlers/command.handler';
 import ButtonHandler from './handlers/button.handler';
 import ModalHandler from './handlers/modal.handler';
+import TestCommand from './interactions/test/test.command';
+import TestButton from './interactions/test/test.button';
+import TestModal from './interactions/test/test.modal';
 
 async function start(): Promise<void> {
     if (!process.env.BOT_TOKEN) {
@@ -17,9 +20,9 @@ async function start(): Promise<void> {
         intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildScheduledEvents],
     });
 
-    const commands: ICommand[] = [];
-    const buttons: IButton[] = [];
-    const modals: IModal[] = [];
+    const commands: ICommand[] = [new TestCommand()];
+    const buttons: IButton[] = [new TestButton()];
+    const modals: IModal[] = [new TestModal()];
 
     const bot = new Bot({
         token: process.env.BOT_TOKEN,
