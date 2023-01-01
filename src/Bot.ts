@@ -6,16 +6,14 @@ import * as relativeTime from 'dayjs/plugin/relativeTime';
 import * as customParseFormat from 'dayjs/plugin/customParseFormat';
 import * as utc from 'dayjs/plugin/utc';
 import * as timezone from 'dayjs/plugin/timezone';
-import { IBotOptions, IHandler } from './types/bot-core';
+import { IBotOptions, IInteraction } from './types/bot-core';
+import { getInteractionContext } from './utilities/core.util';
 
 export default class Bot {
-    private readonly client: Client;
-    private readonly handlers;
+    private readonly client = this.options.client;
+    private readonly interactions = this.options.interactions || {};
 
-    constructor(private readonly options: IBotOptions) {
-        this.client = options.client;
-        this.handlers = options.handlers;
-    }
+    constructor(private readonly options: IBotOptions) {}
 
     public async start(): Promise<void> {
         dayjs.extend(duration);
@@ -42,23 +40,39 @@ export default class Bot {
     }
 
     private async onInteraction(interaction: Interaction): Promise<void> {
-        let handler: IHandler<any> | undefined;
+        // Ignore interactions from bots.
+        if (interaction.user.bot) return;
+
+        // Get the interaction runner.
+        const { commands, buttons, modals } = this.interactions;
+        let runner: IInteraction<any> | undefined;
 
         if (interaction.isChatInputCommand()) {
-            handler = this.handlers?.command;
+            runner = commands?.find((command) => command.builder.name === interaction.commandName);
         } else if (interaction.isButton()) {
-            handler = this.handlers?.button;
+            runner = buttons?.find((button) => button.id === interaction.customId);
         } else if (interaction.isModalSubmit()) {
-            handler = this.handlers?.modal;
+            runner = modals?.find((modal) => modal.id === interaction.customId);
         }
 
-        if (!handler) {
-            Logger.error(`Interaction ${interaction.id} [${interaction.type}] is not supported.`);
+        // If the interaction runner is not found, log it and
+        if (!runner) {
+            Logger.error(`Interaction ${interaction.id} not found.`);
             return;
         }
 
+        // Get the interaction context.
+        const context = getInteractionContext(interaction);
+
+        // Defer the reply if the runner has the ephemeral option set.
+        // This is optional because some interactions should not be deferred.
+        if (runner.options?.ephemeral !== undefined && 'deferReply' in interaction) {
+            await interaction.deferReply({ ephemeral: runner.options.ephemeral ?? false });
+        }
+
         try {
-            await handler.handle(interaction);
+            // Execute the interaction.
+            await runner.execute(context);
         } catch (error: any) {
             Logger.error(`Interaction ${interaction.id} failed to execute.`);
             Logger.error(error.toString());

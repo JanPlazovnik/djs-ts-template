@@ -10,11 +10,13 @@ import {
 export interface IBotOptions {
     token: string;
     client: Client;
-    handlers?: {
-        command?: IHandler<ChatInputCommandInteraction>;
-        button?: IHandler<ButtonInteraction>;
-        modal?: IHandler<ModalSubmitInteraction>;
-    };
+    interactions?: IBotInteractions;
+}
+
+export interface IBotInteractions {
+    commands?: ICommand[];
+    buttons?: IButton[];
+    modals?: IModal[];
 }
 
 export interface IInteractionOptions {
