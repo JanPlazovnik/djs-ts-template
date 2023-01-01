@@ -3,9 +3,6 @@ import Bot from './Bot';
 import Logger from './utilities/logger.util';
 import { registerCommands } from './utilities/registration.util';
 import { ICommand, IModal, IButton } from './types/bot-core';
-import CommandHandler from './handlers/command.handler';
-import ButtonHandler from './handlers/button.handler';
-import ModalHandler from './handlers/modal.handler';
 import TestCommand from './interactions/test/test.command';
 import TestButton from './interactions/test/test.button';
 import TestModal from './interactions/test/test.modal';
@@ -27,10 +24,10 @@ async function start(): Promise<void> {
     const bot = new Bot({
         token: process.env.BOT_TOKEN,
         client,
-        handlers: {
-            command: new CommandHandler(commands),
-            button: new ButtonHandler(buttons),
-            modal: new ModalHandler(modals),
+        interactions: {
+            commands,
+            buttons,
+            modals,
         },
     });
 
