@@ -16,6 +16,7 @@ export default class Bot {
     constructor(private readonly options: IBotOptions) {}
 
     public async start(): Promise<void> {
+        // Register plugins for dayjs (https://day.js.org/docs/en/plugin/loading-into-nodejs)
         dayjs.extend(duration);
         dayjs.extend(relativeTime);
         dayjs.extend(customParseFormat);
