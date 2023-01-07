@@ -2,14 +2,17 @@ import { IModal, IInteractionContext, IInteractionOptions } from '../../types/bo
 import { ModalSubmitInteraction, ButtonBuilder, ButtonStyle, ActionRowBuilder } from 'discord.js';
 import InteractionUtils from '../../utilities/interaction.util';
 
-export default class TestModal implements IModal {
-    public id = 'test_modal';
+const TestModal: IModal = {
+    // The custom_id of the modal that this interaction will be executed for
+    id: 'test_modal',
 
-    public options: IInteractionOptions = {
+    // Options for this interaction
+    options: {
         ephemeral: true,
-    };
+    },
 
-    public async execute({ interaction }: IInteractionContext<ModalSubmitInteraction>): Promise<void> {
+    // The function that will be executed when the modal is submitted
+    async execute({ interaction }: IInteractionContext<ModalSubmitInteraction>): Promise<void> {
         // Create a new button
         const btn = new ButtonBuilder({
             custom_id: 'test_modal_btn',
@@ -21,5 +24,7 @@ export default class TestModal implements IModal {
 
         // Respond to the modal submit with a message containing a button
         await InteractionUtils.followUp(interaction, { content: 'Modal submitted!', components: [row] });
-    }
-}
+    },
+};
+
+export default TestModal;

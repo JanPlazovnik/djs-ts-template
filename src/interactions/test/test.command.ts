@@ -8,10 +8,12 @@ import {
 } from 'discord.js';
 import { ModalBuilder, TextInputBuilder } from '@discordjs/builders';
 
-export default class TestCommand implements ICommand {
-    public builder = new SlashCommandBuilder().setName('test').setDescription('Opens a modal.');
+const TestCommand: ICommand = {
+    // The builder that will be used to register the command
+    builder: new SlashCommandBuilder().setName('test').setDescription('Opens a modal.'),
 
-    public async execute({ interaction }: IInteractionContext<ChatInputCommandInteraction>): Promise<void> {
+    // The function that will be executed when the command is used
+    async execute({ interaction }: IInteractionContext<ChatInputCommandInteraction>): Promise<void> {
         // Create a new modal
         const modal = new ModalBuilder({
             title: 'Test Modal',
@@ -35,5 +37,7 @@ export default class TestCommand implements ICommand {
 
         // Send the modal to the user
         await interaction.showModal(modal);
-    }
-}
+    },
+};
+
+export default TestCommand;
