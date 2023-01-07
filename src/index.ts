@@ -17,9 +17,9 @@ async function start(): Promise<void> {
         intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildScheduledEvents],
     });
 
-    const commands: ICommand[] = [new TestCommand()];
-    const buttons: IButton[] = [new TestButton()];
-    const modals: IModal[] = [new TestModal()];
+    const commands: ICommand[] = [TestCommand];
+    const buttons: IButton[] = [TestButton];
+    const modals: IModal[] = [TestModal];
 
     const bot = new Bot({
         token: process.env.BOT_TOKEN,
